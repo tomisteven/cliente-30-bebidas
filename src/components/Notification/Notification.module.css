@@ -1,0 +1,72 @@
+.notification {
+    min-width: 300px;
+    max-width: 450px;
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.success {
+    border-left: 4px solid #22c55e;
+}
+
+.error {
+    border-left: 4px solid #ef4444;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.success .icon {
+    color: #22c55e;
+}
+
+.error .icon {
+    color: #ef4444;
+}
+
+.message {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.closeBtn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    padding: 0.2rem;
+    border-radius: 4px;
+}
+
+.closeBtn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.closeBtn svg {
+    font-size: 1.1rem;
+}

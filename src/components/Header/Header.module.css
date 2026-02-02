@@ -1,0 +1,329 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4rem;
+    z-index: 1000;
+    transition: var(--transition-smooth);
+}
+
+.headerScrolled {
+    background-color: var(--bg-color);
+    height: 70px;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    transition: var(--transition-smooth);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo:active {
+    transform: scale(0.95);
+}
+
+.logo img {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+    transition: var(--transition-smooth);
+}
+
+/* Adjust logo size when scrolled */
+.headerScrolled .logo img {
+    height: 50px;
+}
+
+.nav {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.navLink {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    opacity: 0.8;
+}
+
+.navLink:hover {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.userSection {
+    display: flex;
+    align-items: center;
+}
+
+.loginBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+.loginBtn:hover {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+.userMenuContainer {
+    position: relative;
+}
+
+.userTrigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.9;
+    transition: var(--transition-smooth);
+}
+
+.userTrigger:hover {
+    color: var(--accent-color);
+}
+
+.userName {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.userDropdown {
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+.pointsBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(197, 160, 89, 0.1);
+    border-radius: 8px;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 0.8rem 0;
+}
+
+.dropdownItem {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    transition: var(--transition-smooth);
+}
+
+.dropdownItem:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.themeToggle {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    transition: var(--transition-smooth);
+    opacity: 0.8;
+}
+
+.themeToggle:hover {
+    opacity: 1;
+    color: var(--accent-color);
+    transform: rotate(15deg);
+}
+
+.cartIcon {
+    position: relative;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobileMenuBtn {
+    display: none;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+@media (max-width: 992px) {
+    .header {
+        padding: 0 2rem;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .mobileMenuBtn {
+        display: block;
+    }
+
+    .userName {
+        display: none;
+    }
+}
+
+/* Mobile Menu Styles */
+.mobileOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1001;
+}
+
+.mobileMenu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%;
+    max-width: 350px;
+    height: 100vh;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border-left: 1px solid var(--border-color);
+    z-index: 1002;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.mobileMenuHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    color: var(--text-primary);
+}
+
+.mobileMenuHeader h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.mobileLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+.mobileNavLink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid transparent;
+}
+
+.mobileNavLink:hover {
+    color: var(--accent-color);
+}
+
+.mobileActions {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.mobileLoginBtn,
+.mobileThemeToggle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.mobileLoginBtn:hover,
+.mobileThemeToggle:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+}

@@ -1,0 +1,418 @@
+.home {
+    background-color: var(--bg-color);
+
+}
+
+.catalogSection {
+    padding: 2rem 0 6rem;
+}
+
+.sectionTitle {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    letter-spacing: -1.5px;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.sectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-color);
+}
+
+.essenceSection {
+    display: flex;
+    background-color: var(--bg-secondary);
+    margin: 8rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 500px;
+    border: 1px solid var(--border-color);
+}
+
+.essenceContent {
+    flex: 1;
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.essenceTag {
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.essenceTitle {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    letter-spacing: -1.5px;
+}
+
+.essenceText {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.featureItem h3 {
+    font-size: 0.9rem;
+    margin: 1rem 0 0.5rem;
+    color: var(--text-primary);
+}
+
+.featureItem p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.featureIcon {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.essenceImage {
+    flex: 0.8;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.essenceImage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--bg-secondary), transparent);
+}
+
+@media (max-width: 1024px) {
+    .essenceSection {
+        flex-direction: column;
+    }
+
+    .essenceContent {
+        padding: 4rem 2rem;
+    }
+
+    .essenceImage {
+        height: 300px;
+    }
+
+    .essenceImage::before {
+        background: linear-gradient(to bottom, var(--bg-secondary), transparent);
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .essenceContent {
+        padding: 3rem 1.5rem;
+    }
+
+    .essenceTitle {
+        font-size: 2rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.8rem;
+    }
+}
+
+/* Exclusive Products Section */
+.exclusiveSection {
+    margin: 4rem 0;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, var(--bg-secondary) 100%);
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.exclusiveSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), #d4a855, var(--accent-color));
+}
+
+.exclusiveHeader {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.exclusiveBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--accent-color), #d4a855);
+    color: var(--bg-color);
+    padding: 0.5rem 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.exclusiveBadge svg {
+    font-size: 1rem;
+}
+
+.exclusiveTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.exclusiveSubtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .exclusiveSection {
+        padding: 2rem 1.5rem;
+        margin: 3rem 0;
+    }
+
+    .exclusiveTitle {
+        font-size: 1.5rem;
+    }
+
+    .exclusiveSubtitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* Combo Promo Banner */
+.comboBanner {
+    position: relative;
+    margin: 4rem 0;
+    padding: 3rem 4rem;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(212, 175, 55, 0.1) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.comboBanner:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.comboBanner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.comboBannerContent {
+    flex: 1;
+    z-index: 1;
+}
+
+.comboBannerTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--accent-color), #d4a855);
+    color: var(--bg-color);
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+}
+
+.comboBannerTag svg {
+    font-size: 0.9rem;
+}
+
+.comboBannerTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.comboBannerTitle span {
+    color: var(--accent-color);
+}
+
+.comboBannerText {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+}
+
+.comboBannerBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--accent-color);
+    color: var(--bg-color);
+    padding: 0.9rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.comboBannerBtn:hover {
+    background: var(--text-primary);
+    color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+.comboBannerBtn svg {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.comboBannerBtn:hover svg {
+    transform: translateX(3px);
+}
+
+.comboBannerVisual {
+    display: flex;
+    align-items: center;
+    gap: -1.5rem;
+    z-index: 1;
+}
+
+.comboBannerImages {
+    display: flex;
+    position: relative;
+}
+
+.comboBannerImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    background: #fff;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.comboBannerImage:not(:first-child) {
+    margin-left: -30px;
+}
+
+.comboBanner:hover .comboBannerImage {
+    border-color: var(--accent-color);
+}
+
+.comboBannerImage img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+}
+
+.comboBannerDiscount {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-left: 1.5rem;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+}
+
+.comboBannerDiscountValue {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    display: block;
+}
+
+.comboBannerDiscountLabel {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+    .comboBanner {
+        flex-direction: column;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .comboBannerContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .comboBannerTitle {
+        font-size: 1.5rem;
+    }
+
+    .comboBannerText {
+        font-size: 0.9rem;
+    }
+
+    .comboBannerVisual {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .comboBannerDiscount {
+        margin-left: 0;
+    }
+}
