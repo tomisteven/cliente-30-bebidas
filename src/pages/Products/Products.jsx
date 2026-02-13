@@ -26,7 +26,7 @@ const Products = () => {
         setLoading(true);
         setPage(1);
         try {
-            const data = await getProducts({ search, categoria, sort, sellType, excludeCategoria: 'Nicho', limit: PRODUCTS_PER_PAGE, page: 1 });
+            const data = await getProducts({ search, categoria, sort, sellType, limit: PRODUCTS_PER_PAGE, page: 1 });
             setProducts(data.products || []);
             setHasMore((data.products || []).length === PRODUCTS_PER_PAGE);
         } catch (error) {
@@ -41,7 +41,7 @@ const Products = () => {
         setLoadingMore(true);
         const nextPage = page + 1;
         try {
-            const data = await getProducts({ search, categoria, sort, sellType, excludeCategoria: 'Nicho', limit: PRODUCTS_PER_PAGE, page: nextPage });
+            const data = await getProducts({ search, categoria, sort, sellType, limit: PRODUCTS_PER_PAGE, page: nextPage });
             const newProducts = data.products || [];
             if (newProducts.length === 0) {
                 setHasMore(false);
