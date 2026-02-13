@@ -3,14 +3,16 @@ import { getProducts, getCategories } from '../../api/product.api';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import styles from './Products.module.css';
 import { FiSearch, FiGrid, FiList, FiChevronDown } from 'react-icons/fi';
+import { useSearchParams } from 'react-router-dom';
 import SEO from '../../components/SEO/SEO';
 
 const Products = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [search, setSearch] = useState('');
-    const [categoria, setCategoria] = useState('');
+    const [categoria, setCategoria] = useState(searchParams.get('categoria') || '');
     const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
     const [sort, setSort] = useState('nombre:asc');
     const [sellType, setSellType] = useState(''); // '', 'perfume', 'decant'
@@ -56,6 +58,23 @@ const Products = () => {
     };
 
     useEffect(() => {
+        const cat = searchParams.get('categoria');
+        if (cat !== null) {
+            setCategoria(cat);
+        }
+    }, [searchParams]);
+
+    const handleCategoriaChange = (newCat) => {
+        setCategoria(newCat);
+        if (newCat) {
+            setSearchParams({ categoria: newCat });
+        } else {
+            searchParams.delete('categoria');
+            setSearchParams(searchParams);
+        }
+    };
+
+    useEffect(() => {
         const fetchAllCategories = async () => {
             try {
                 const data = await getCategories();
@@ -83,14 +102,18 @@ const Products = () => {
     return (
         <div className={styles.page}>
             <SEO
-                title="Catálogo de Fragancias"
-                description="Explorá nuestro catálogo mayorista de perfumes árabes. Lattafa, Maison Alhambra, Afnan y más en un solo lugar."
-                keywords="catalogo perfumes, perfumes por mayor, lattafa argentina, maison alhambra"
+                title="Venta Mayorista de Bebidas | Malvinas Argentinas"
+                description="Hacé tu pedido mayorista de bebidas online. Distribuidora líder en Los Polvorines, Villa de Mayo y alrededores. Precios imbatibles por pack y pallet."
+                keywords="venta de bebidas por mayor, distribuidora malvinas argentinas, gaseosas por pack polvorines, cervezas por mayor buenos aires"
             />
             <div className="container">
                 <header className={styles.header}>
-                    <h1 className={styles.title}>Venta Mayorista de Perfumes Árabes</h1>
-                    <p className={styles.subtitle}>Explorá la colección completa de elixires árabes.</p>
+                    <h1 className={styles.title}>Distribuidora Mayorista en Malvinas Argentinas</h1>
+                    <p className={styles.subtitle}>Stock permanente de gaseosas, cervezas y destilados para tu comercio.</p>
+                    <div className={styles.todayUpdate}>
+                        <div className={styles.todayPulse} />
+                        <span>Precios actualizados al <strong>{new Intl.DateTimeFormat('es-AR', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date())}</strong></span>
+                    </div>
                 </header>
             </div>
 
@@ -101,7 +124,7 @@ const Products = () => {
                             <FiSearch className={styles.searchIcon} />
                             <input
                                 type="text"
-                                placeholder="Buscar perfume (Lattafa, Asad, etc.)"
+                                placeholder="Buscar bebidas (Coca Cola, Fernet, etc.)"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className={styles.searchInput}
@@ -123,9 +146,9 @@ const Products = () => {
                         <select
                             className={styles.categorySelect}
                             value={categoria}
-                            onChange={(e) => setCategoria(e.target.value)}
+                            onChange={(e) => handleCategoriaChange(e.target.value)}
                         >
-                            <option value="">Todas las marcas</option>
+                            <option value="">Todas las categorías</option>
                             {categories.map(cat => (
                                 <option key={cat} value={cat}>{cat}</option>
                             ))}
@@ -136,9 +159,9 @@ const Products = () => {
                             value={sellType}
                             onChange={(e) => setSellType(e.target.value)}
                         >
-                            <option value="">Todo (Frasco/Decant)</option>
-                            <option value="perfume">Solo Frascos</option>
-                            <option value="decant">Solo Decants</option>
+                            <option value="">Todos los productos</option>
+                            <option value="unidad">Por Unidad</option>
+                            <option value="pack">Por Pack / Caja</option>
                         </select>
 
                         <div className={styles.viewToggles}>
@@ -165,7 +188,22 @@ const Products = () => {
                 <div className={styles.catalogLayout}>
                     <main className={styles.mainContent}>
                         {loading ? (
-                            <div className={styles.loader}>Buscando esencias...</div>
+                            <div className={styles.loader}>Buscando bebidas...</div>
+                        ) : categoria === 'Cervezas' || categoria === 'Vinos' ? (
+                            <div className={styles.comingSoon}>
+                                <div className={styles.comingSoonIcon}>
+                                    <FiShoppingBag />
+                                </div>
+                                <h2>Próximamente</h2>
+                                <p>
+                                    Estamos preparando nuestro catálogo de {categoria === 'Cervezas' ? 'Cervezas' : 'Vinos y Espirituosas'}.
+                                    <br />
+                                    ¡Vuelve pronto para ver nuestras novedades!
+                                </p>
+                                <button className={styles.backBtn} onClick={() => setCategoria('')}>
+                                    Ver Gaseosas disponibles
+                                </button>
+                            </div>
                         ) : (
                             <>
                                 <div className={viewMode === 'grid' ? styles.grid : styles.list}>
@@ -181,7 +219,7 @@ const Products = () => {
                                         ))
                                     ) : (
                                         <div className={styles.noResults}>
-                                            <p>No se encontraron perfumes con estos criterios.</p>
+                                            <p>No se encontraron productos con estos criterios.</p>
                                         </div>
                                     )}
                                 </div>
@@ -193,7 +231,7 @@ const Products = () => {
                                             onClick={loadMoreProducts}
                                             disabled={loadingMore}
                                         >
-                                            {loadingMore ? 'Cargando...' : <>Cargar más fragancias <FiChevronDown /></>}
+                                            {loadingMore ? 'Cargando...' : <>Cargar más productos <FiChevronDown /></>}
                                         </button>
                                     </div>
                                 )}

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FiAward, FiShield, FiTruck, FiMapPin, FiCheckCircle } from 'react-icons/fi';
 import styles from './About.module.css';
+import SEO from '../../components/SEO/SEO';
 import distriWarehouse from '../../assets/banners/hero_main.png';
 import distriBottles from '../../assets/banners/hero_beers.png';
 import distriShowroom from '../../assets/banners/hero_spirits.png';
@@ -9,6 +10,11 @@ import distriShowroom from '../../assets/banners/hero_spirits.png';
 const About = () => {
     return (
         <div className={styles.aboutPage}>
+            <SEO
+                title="Nosotros | Distribuidora 30 Bebidas"
+                description="Conocé la historia detrás de 30 Bebidas. Dos emprendedores de Malvinas Argentinas abasteciendo a kioscos y almacenes con la mejor logística."
+                keywords="nosotros distribuidora, 30 bebidas historia, emprendedores malvinas argentinas, distribucion bebidas polvorines"
+            />
             {/* Hero Section */}
             <div className={styles.hero} style={{ backgroundImage: `url(${distriWarehouse})` }}>
                 <div className={styles.overlay}></div>
@@ -19,7 +25,7 @@ const About = () => {
                     transition={{ duration: 0.8 }}
                 >
                     <h1>Distribuidora 30 Bebidas</h1>
-                    <p>Eficiencia y escala en logística de bebidas para todo el país.</p>
+                    <p>Potenciando los comercios de nuestra zona con logística eficiente y precios directos.</p>
                 </motion.div>
             </div>
 
@@ -44,36 +50,36 @@ const About = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
                         >
-                            <span className={styles.tag}>NUESTRA TRAYECTORIA</span>
-                            <h2>Expertos en Distribución</h2>
+                            <span className={styles.tag}>NUESTRA HISTORIA</span>
+                            <h2>Dos Emprendedores, Una Misión</h2>
                             <p>
-                                En <strong>30 Bebidas</strong>, nos consolidamos como referentes en el abastecimiento mayorista y minorista de bebidas en Argentina.
-                                Nuestra infraestructura nos permite manejar grandes volúmenes de stock con una logística ágil y precisa.
+                                Somos de <strong>Malvinas Argentinas</strong>, específicamente de la zona de Los Polvorines.
+                                Nacimos como un proyecto de dos emprendedores que vieron la necesidad de brindar una logística más humana y eficiente a los comercios de barrio.
                             </p>
                             <p>
-                                No solo entregamos productos; brindamos soluciones de abastecimiento para comercios, eventos y consumidores exigentes.
-                                Contamos con alianzas directas con las principales marcas de cervezas, gaseosas y destilados premium.
+                                Entendemos el esfuerzo de cada kiosquero y almacenero porque compartimos ese mismo espíritu.
+                                Por eso, nuestra misión es ser el socio estratégico que necesitás, garantizando stock constante de las principales marcas y una entrega que no te falla.
                             </p>
 
                             <div className={styles.featuresList}>
                                 <div className={styles.feature}>
                                     <FiCheckCircle className={styles.icon} />
-                                    <span>Logística Propia de Gran Escala</span>
+                                    <span>Atención Directa y Personalizada</span>
                                 </div>
                                 <div className={styles.feature}>
                                     <FiCheckCircle className={styles.icon} />
-                                    <span>Precios Directos de Fábrica</span>
+                                    <span>Entrega Gratuita en Zonas de Cercanía</span>
                                 </div>
                                 <div className={styles.feature}>
                                     <FiCheckCircle className={styles.icon} />
-                                    <span>Atención Corporativa y Minorista</span>
+                                    <span>Apoyo al Comercio Local</span>
                                 </div>
                             </div>
                         </motion.div>
                     </div>
                 </section>
 
-                {/* Confianza & Local Section */}
+                {/* Compromiso Section */}
                 <section className={`${styles.section} ${styles.reversed}`}>
                     <div className={styles.grid}>
                         <motion.div
@@ -83,24 +89,24 @@ const About = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
                         >
-                            <span className={styles.tag}>INFRAESTRUCTURA</span>
-                            <h2>Compromiso y Confiabilidad</h2>
+                            <span className={styles.tag}>NUESTRO COMPROMISO</span>
+                            <h2>Creciendo Junto a Tu Negocio</h2>
                             <p>
-                                Operamos con un centro de distribución optimizado para garantizar que cada pedido llegue en condiciones impecables.
-                                Nuestra red de distribución cubre todo el país, asegurando tiempos de entrega competitivos tanto para packs como para pallets completos.
+                                No solo distribuimos bebidas; construimos relaciones. Abastecemos a cientos de puntos de venta con la seriedad que el rubro exige.
+                                Ya sea que necesites packs para tu heladera o pallets completos para tu depósito, en <strong>30 Bebidas</strong> encontrás el respaldo que buscás.
                             </p>
                             <p>
-                                La transparencia en nuestras operaciones y el respaldo de miles de clientes satisfechos nos avalan como el socio estratégico ideal para tu negocio.
+                                Seguimos innovando en nuestra logística desde Los Polvorines hacia toda la zona, incorporando tecnología para que hagas tus pedidos de la forma más rápida y sencilla.
                             </p>
 
                             <div className={styles.stats}>
                                 <div className={styles.statItem}>
-                                    <h3>+10k</h3>
-                                    <p>Pedidos Entregados</p>
+                                    <h3>Villa de Mayo</h3>
+                                    <p>Envío Gratis</p>
                                 </div>
                                 <div className={styles.statItem}>
-                                    <h3>24hs</h3>
-                                    <p>Despacho Rápido</p>
+                                    <h3>Polvorines</h3>
+                                    <p>Zona Centro</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -111,7 +117,7 @@ const About = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
                         >
-                            <img src={distriShowroom} alt="Showroom 30 Bebidas" />
+                            <img src={distriShowroom} alt="Distribución 30 Bebidas" />
                             <div className={styles.imageDecorReversed}></div>
                         </motion.div>
                     </div>
@@ -127,8 +133,8 @@ const About = () => {
                         transition={{ delay: 0.1 }}
                     >
                         <div className={styles.valueIcon}><FiAward /></div>
-                        <h3>Calidad Premium</h3>
-                        <p>Solo trabajamos con productos auténticos y sellados. La excelencia es innegociable.</p>
+                        <h3>Precios Competitivos</h3>
+                        <p>Trabajamos para que tu margen de ganancia sea el mejor, con precios por pack y pallet imbatibles.</p>
                     </motion.div>
                     <motion.div
                         className={styles.valueCard}
@@ -138,8 +144,8 @@ const About = () => {
                         transition={{ delay: 0.2 }}
                     >
                         <div className={styles.valueIcon}><FiShield /></div>
-                        <h3>Seguridad Total</h3>
-                        <p>Tus compras están protegidas. Operamos con total transparencia y respaldo.</p>
+                        <h3>Confianza Total</h3>
+                        <p>Somos vecinos de la zona. Nuestra mayor garantía es el cumplimiento y la palabra.</p>
                     </motion.div>
                     <motion.div
                         className={styles.valueCard}
@@ -149,8 +155,8 @@ const About = () => {
                         transition={{ delay: 0.3 }}
                     >
                         <div className={styles.valueIcon}><FiTruck /></div>
-                        <h3>Envíos a todo el País</h3>
-                        <p>Llegamos a cada rincón de Argentina con embalajes seguros y tiempos rápidos.</p>
+                        <h3>Logística Ágil</h3>
+                        <p>Repartos coordinados para que nunca te quedes sin stock en los días de mayor venta.</p>
                     </motion.div>
                 </section>
             </div>

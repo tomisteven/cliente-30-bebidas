@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import supplierApi from '../../../api/supplier.api';
-import { FiArrowLeft, FiPlus, FiSave, FiTrash2, FiClock, FiTag, FiBox, FiX } from 'react-icons/fi';
-import styles from '../AdminDashboard.module.css';
+import {
+    FiArrowLeft, FiPlus, FiSave, FiTrash2,
+    FiClock, FiTag, FiBox, FiMessageCircle,
+    FiDollarSign, FiHash, FiLayers,
+    FiChevronDown, FiChevronUp
+} from 'react-icons/fi';
+import styles from './SupplierDetail.module.css';
 
 const SupplierDetail = () => {
     const { id } = useParams();
@@ -11,6 +17,17 @@ const SupplierDetail = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [products, setProducts] = useState([]);
+    const [expandedIndices, setExpandedIndices] = useState(new Set());
+
+    const toggleExpand = (index) => {
+        const newExpanded = new Set(expandedIndices);
+        if (newExpanded.has(index)) {
+            newExpanded.delete(index);
+        } else {
+            newExpanded.add(index);
+        }
+        setExpandedIndices(newExpanded);
+    };
 
     useEffect(() => {
         const fetchSupplier = async () => {
@@ -20,7 +37,6 @@ const SupplierDetail = () => {
                 setProducts(response.data.products || []);
             } catch (error) {
                 console.error('Error fetching supplier:', error);
-                alert('No se pudo cargar la información del proveedor');
                 navigate('/admin/proveedores');
             } finally {
                 setLoading(false);
@@ -45,6 +61,8 @@ const SupplierDetail = () => {
             lastUpdate: new Date().toISOString()
         };
         setProducts([newProduct, ...products]);
+        // Expand the first item (the new one)
+        setExpandedIndices(new Set([0]));
     };
 
     const handleProductChange = (index, field, value) => {
@@ -58,16 +76,19 @@ const SupplierDetail = () => {
     };
 
     const handleRemoveProduct = (index) => {
-        if (window.confirm('¿Eliminar este producto de la lista?')) {
-            const updatedProducts = products.filter((_, i) => i !== index);
-            setProducts(updatedProducts);
-        }
+        const updatedProducts = products.filter((_, i) => i !== index);
+        setProducts(updatedProducts);
+        // Clear expansion for removed index
+        const newExpanded = new Set(expandedIndices);
+        newExpanded.delete(index);
+        setExpandedIndices(newExpanded);
     };
 
     const handleSave = async () => {
         setSaving(true);
         try {
             await supplierApi.update(id, { products });
+            // Notification or Alert? The previous code used alert
             alert('Lista de precios actualizada correctamente');
         } catch (error) {
             alert('Error al guardar cambios');
@@ -76,144 +97,218 @@ const SupplierDetail = () => {
         }
     };
 
-    if (loading) return <div className={styles.loader}>Cargando lista de precios...</div>;
+    if (loading) return (
+        <div className={styles.loadingContainer}>
+            <div className={styles.loader}></div>
+            <p>Sincronizando Lista de Precios...</p>
+        </div>
+    );
 
     return (
-        <div className={styles.tabContent}>
-            <div className={styles.tabHeader}>
-                <button className="outline-btn" onClick={() => navigate('/admin/proveedores')} style={{ border: 'none', background: 'rgba(255,255,255,0.05)' }}>
-                    <FiArrowLeft /> Panel
-                </button>
+        <div className={styles.container}>
+            {/* Professional Header */}
+            <header className={styles.header}>
                 <div className={styles.headerInfo}>
-                    <h2 style={{ margin: 0 }}>{supplier.name}</h2>
-                    <span className={styles.dateLabel}>Módulo de Costos y Logística</span>
+                    <button className={styles.backBtn} onClick={() => navigate('/admin/proveedores')}>
+                        <FiArrowLeft />
+                    </button>
+                    <div>
+                        <span className={styles.subTitle}>Gestión de Proveedor</span>
+                        <h2>{supplier.name}</h2>
+                    </div>
                 </div>
-                <div className={styles.actions}>
-                    <button className="outline-btn" onClick={handleAddProduct}>
+                <div className={styles.controls}>
+                    <button className={styles.addBtn} onClick={handleAddProduct}>
                         <FiPlus /> Nueva Fila
                     </button>
-                    <button className="premium-btn" onClick={handleSave} disabled={saving}>
-                        <FiSave /> {saving ? 'Guardando...' : 'Guardar Todo'}
+                    <button className={styles.saveBtn} onClick={handleSave} disabled={saving}>
+                        <FiSave /> {saving ? 'Sincronizando...' : 'Guardar Todo'}
                     </button>
                 </div>
-            </div>
+            </header>
 
-            <div className={styles.excelContainer}>
-                <div style={{ overflowX: 'auto' }}>
-                    <table className={styles.excelTable}>
-                        <thead>
-                            <tr>
-                                <th style={{ minWidth: '220px' }}>Producto / Descripción</th>
-                                <th style={{ minWidth: '140px' }}>Categoría</th>
-                                <th style={{ minWidth: '110px' }}>$ Unidad</th>
-                                <th style={{ minWidth: '110px' }}>$ Pack</th>
-                                <th style={{ minWidth: '70px' }}>U/Pk</th>
-                                <th style={{ minWidth: '110px' }}>$ Pallet</th>
-                                <th style={{ minWidth: '110px' }}>$ Especial</th>
-                                <th style={{ minWidth: '70px' }}>Cant. X</th>
-                                <th style={{ minWidth: '150px' }}>Notas Internas</th>
-                                <th style={{ minWidth: '100px' }}>Actualizado</th>
-                                <th style={{ width: '50px' }}></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.map((product, idx) => (
-                                <tr key={idx}>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={product.name}
-                                            onChange={e => handleProductChange(idx, 'name', e.target.value)}
-                                            placeholder="Ej: Coca Cola 1.5L"
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={product.category}
-                                            onChange={e => handleProductChange(idx, 'category', e.target.value)}
-                                            placeholder="..."
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={product.price}
-                                            onChange={e => handleProductChange(idx, 'price', Number(e.target.value))}
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={product.pricePack}
-                                            onChange={e => handleProductChange(idx, 'pricePack', Number(e.target.value))}
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={product.unitsPerPack}
-                                            onChange={e => handleProductChange(idx, 'unitsPerPack', Number(e.target.value))}
-                                            className={styles.excelInput}
-                                            placeholder="6"
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={product.pricePallet}
-                                            onChange={e => handleProductChange(idx, 'pricePallet', Number(e.target.value))}
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={product.priceCustom}
-                                            onChange={e => handleProductChange(idx, 'priceCustom', Number(e.target.value))}
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={product.customQuantity}
-                                            onChange={e => handleProductChange(idx, 'customQuantity', Number(e.target.value))}
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={product.comments}
-                                            onChange={e => handleProductChange(idx, 'comments', e.target.value)}
-                                            placeholder="Ej: Oferta semanal"
-                                            className={styles.excelInput}
-                                        />
-                                    </td>
-                                    <td style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
-                                        {new Date(product.lastUpdate).toLocaleDateString()}
-                                    </td>
-                                    <td style={{ textAlign: 'center' }}>
-                                        <button onClick={() => handleRemoveProduct(idx)} className={styles.deleteBtn} style={{ fontSize: '0.9rem' }}>
-                                            <FiX />
+            {/* Products Grid */}
+            <div className={styles.grid}>
+                <AnimatePresence>
+                    {products.map((product, idx) => {
+                        const isExpanded = expandedIndices.has(idx);
+                        return (
+                            <motion.div
+                                key={idx}
+                                className={`${styles.productCard} ${isExpanded ? styles.expanded : ''}`}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                layout
+                            >
+                                <div className={styles.accordionHeader} onClick={() => toggleExpand(idx)}>
+                                    <div className={styles.headerInfoSimple}>
+                                        <div className={styles.titleArea}>
+                                            <span className={styles.productNameDisplay}>
+                                                {product.name || 'Sin nombre'}
+                                            </span>
+                                            <span className={styles.categoryBadge}>
+                                                {product.category || 'Sin categoría'}
+                                            </span>
+                                        </div>
+                                        <div className={styles.priceSummary}>
+                                            <span className={styles.summaryLabel}>U:</span>
+                                            <span className={styles.summaryValue}>${product.price}</span>
+                                            <span className={styles.summaryLabel}>P:</span>
+                                            <span className={styles.summaryValue}>${product.pricePack}</span>
+                                        </div>
+                                    </div>
+                                    <div className={styles.headerActions}>
+                                        <button onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleRemoveProduct(idx);
+                                        }} className={styles.removeBtnSimple}>
+                                            <FiTrash2 />
                                         </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                        <div className={styles.chevron}>
+                                            {isExpanded ? <FiChevronUp /> : <FiChevronDown />}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <AnimatePresence>
+                                    {isExpanded && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                            className={styles.accordionBody}
+                                        >
+                                            <div className={styles.cardHeader}>
+                                                <div className={styles.group}>
+                                                    <label>Editar Nombre</label>
+                                                    <input
+                                                        type="text"
+                                                        value={product.name}
+                                                        onChange={e => handleProductChange(idx, 'name', e.target.value)}
+                                                        placeholder="Ej: Coca Cola 1.5L"
+                                                        className={styles.nameInput}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className={styles.mainInfo}>
+                                                <div className={styles.group}>
+                                                    <label>Categoría</label>
+                                                    <div className={styles.inputWrapper}>
+                                                        <FiTag className={styles.icon} />
+                                                        <input
+                                                            type="text"
+                                                            value={product.category}
+                                                            onChange={e => handleProductChange(idx, 'category', e.target.value)}
+                                                            placeholder="Gaseosas, Vinos, etc."
+                                                            className={styles.input}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Pricing Sections */}
+                                            <div className={styles.pricingSection}>
+                                                <span className={styles.sectionLabel}>Estructura de Costos</span>
+                                                <div className={styles.pricingGrid}>
+                                                    <div className={styles.priceItem}>
+                                                        <label>$ Unidad</label>
+                                                        <input
+                                                            type="number"
+                                                            value={product.price}
+                                                            onChange={e => handleProductChange(idx, 'price', Number(e.target.value))}
+                                                            className={styles.numberInput}
+                                                        />
+                                                    </div>
+                                                    <div className={styles.priceItem}>
+                                                        <label>$ Pack</label>
+                                                        <input
+                                                            type="number"
+                                                            value={product.pricePack}
+                                                            onChange={e => handleProductChange(idx, 'pricePack', Number(e.target.value))}
+                                                            className={styles.numberInput}
+                                                        />
+                                                    </div>
+                                                    <div className={styles.priceItem}>
+                                                        <label>U. x Pack</label>
+                                                        <input
+                                                            type="number"
+                                                            value={product.unitsPerPack}
+                                                            onChange={e => handleProductChange(idx, 'unitsPerPack', Number(e.target.value))}
+                                                            className={styles.numberInput}
+                                                        />
+                                                    </div>
+                                                    <div className={styles.priceItem}>
+                                                        <label>$ Pallet</label>
+                                                        <input
+                                                            type="number"
+                                                            value={product.pricePallet}
+                                                            onChange={e => handleProductChange(idx, 'pricePallet', Number(e.target.value))}
+                                                            className={styles.numberInput}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Optional / Custom */}
+                                            <div className={styles.customSection}>
+                                                <div className={styles.pricingGrid}>
+                                                    <div className={styles.priceItem}>
+                                                        <label>$ Especial</label>
+                                                        <input
+                                                            type="number"
+                                                            value={product.priceCustom}
+                                                            onChange={e => handleProductChange(idx, 'priceCustom', Number(e.target.value))}
+                                                            className={styles.numberInput}
+                                                        />
+                                                    </div>
+                                                    <div className={styles.priceItem}>
+                                                        <label>Cant. X</label>
+                                                        <input
+                                                            type="number"
+                                                            value={product.customQuantity}
+                                                            onChange={e => handleProductChange(idx, 'customQuantity', Number(e.target.value))}
+                                                            className={styles.numberInput}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className={styles.group}>
+                                                <label>Notas Internas</label>
+                                                <div className={styles.inputWrapper}>
+                                                    <FiMessageCircle className={styles.icon} />
+                                                    <input
+                                                        type="text"
+                                                        value={product.comments}
+                                                        onChange={e => handleProductChange(idx, 'comments', e.target.value)}
+                                                        placeholder="Ej: Oferta válida hasta el lunes"
+                                                        className={styles.input}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <footer className={styles.cardFooter}>
+                                                <div className={styles.lastUpdate}>
+                                                    <FiClock /> Sincronizado: {new Date(product.lastUpdate).toLocaleDateString()}
+                                                </div>
+                                            </footer>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
+
                 {products.length === 0 && (
-                    <div style={{ padding: '5rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                        <FiBox style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.2 }} />
+                    <div className={styles.emptyState}>
+                        <FiBox />
                         <p>No hay productos registrados para este proveedor.</p>
-                        <button className="outline-btn" onClick={handleAddProduct} style={{ marginTop: '1rem' }}>
-                            Comenzar ahora
+                        <button className={styles.addBtn} onClick={handleAddProduct}>
+                            Crear Primer Producto
                         </button>
                     </div>
                 )}

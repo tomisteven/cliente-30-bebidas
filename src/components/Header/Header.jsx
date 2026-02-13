@@ -36,10 +36,7 @@ const Header = ({ toggleCart }) => {
 
     const navLinks = [
         { name: 'Inicio', path: '/' },
-        { name: 'Cervezas', path: '/productos?categoria=Cervezas' },
-        { name: 'Gaseosas', path: '/productos?categoria=Gaseosas' },
-        { name: 'Vinos y Espirituosas', path: '/productos?categoria=Vinos' },
-        { name: 'Nosotros', path: '/about' },
+        { name: 'Nosotros', path: '/nosotros' },
         { name: 'Preguntas', path: '/faq' },
         ...(isAdmin ? [{ name: 'Admin', path: '/admin' }] : []),
     ];

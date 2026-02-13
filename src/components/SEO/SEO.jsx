@@ -4,7 +4,7 @@ const SEO = ({ title, description, keywords, canonical }) => {
     useEffect(() => {
         // Update Title
         if (title) {
-            document.title = `${title} | Al Vuelo Importados`;
+            document.title = `${title} | 30 Bebidas`;
         }
 
         // Update Description
@@ -25,7 +25,7 @@ const SEO = ({ title, description, keywords, canonical }) => {
             linkCanonical.setAttribute('href', canonical);
         } else if (linkCanonical) {
             // Default canonical for the current path if not provided
-            linkCanonical.setAttribute('href', `https://alvuelomayorista.com${window.location.pathname}`);
+            linkCanonical.setAttribute('href', `https://30bebidas.com.ar${window.location.pathname}`);
         }
 
         // OG Tags

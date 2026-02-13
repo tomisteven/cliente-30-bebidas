@@ -226,10 +226,10 @@ const AdminLayout = () => {
                 <div className={styles.header}>
                     <h1 className={styles.title}>Panel de Administración</h1>
                     <div className={styles.actions}>
-                        <Link to="/admin/crear-producto" className="premium-btn">
+                        <Link to="/admin/crear-producto" className={styles.premiumBtn}>
                             <FiPlus /> Producto
                         </Link>
-                        <Link to="/admin/crear-combo" className="outline-btn">
+                        <Link to="/admin/crear-combo" className={styles.outlineBtn}>
                             <FiPlus /> Combo
                         </Link>
                     </div>

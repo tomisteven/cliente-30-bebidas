@@ -61,39 +61,38 @@ const Checkout = () => {
         const surchargePercentage = getSurchargePercentage(formData.paymentMethod);
         const finalTotal = discountedTotal * (1 + surchargePercentage / 100);
 
-        // Si el usuario está autenticado, guardamos el pedido en el servidor
-        if (isAuthenticated) {
-            try {
-                await orderApi.create({
-                    items: cart.map(item => ({
-                        product: item._id,
-                        nombre: item.nombre || item.name,
-                        precio: getItemPrice(item),
-                        quantity: item.quantity,
-                        unitType: item.unitType || 'unit',
-                        type: item.type
-                    })),
-                    subtotal: cartTotal,
-                    discountCode: appliedDiscount?.code,
-                    discountValue: cartTotal - discountedTotal,
-                    total: discountedTotal,
-                    shippingData: {
-                        name: formData.name,
-                        phone: formData.phone,
-                        email: formData.email,
-                        city: formData.city
-                    },
-                    paymentMethod: formData.paymentMethod,
-                    observations: formData.observations,
-                    surcharge: finalTotal - discountedTotal,
-                    exchangeRate: exchangeRate,
-                    subtotalARS: convertToARS(cartTotal),
-                    totalARS: convertToARS(finalTotal)
-                });
-            } catch (error) {
-                console.error('Error al guardar el pedido:', error);
-                // Continuamos con el WhatsApp de todas formas para no bloquear la venta
-            }
+        // Registramos el pedido en el servidor (para control del admin)
+        // Ya no requerimos isAuthenticated, el backend ahora maneja pedidos de invitados
+        try {
+            await orderApi.create({
+                items: cart.map(item => ({
+                    product: item._id,
+                    nombre: item.nombre || item.name,
+                    precio: getItemPrice(item),
+                    quantity: item.quantity,
+                    unitType: item.unitType || 'unit',
+                    type: item.type
+                })),
+                subtotal: cartTotal,
+                discountCode: appliedDiscount?.code,
+                discountValue: cartTotal - discountedTotal,
+                total: discountedTotal,
+                shippingData: {
+                    name: formData.name,
+                    phone: formData.phone,
+                    email: formData.email,
+                    city: formData.city
+                },
+                paymentMethod: formData.paymentMethod,
+                observations: formData.observations,
+                surcharge: finalTotal - discountedTotal,
+                exchangeRate: exchangeRate,
+                subtotalARS: convertToARS(cartTotal),
+                totalARS: convertToARS(finalTotal)
+            });
+        } catch (error) {
+            console.error('Error al guardar el pedido:', error);
+            // Continuamos con el WhatsApp de todas formas para no bloquear la venta
         }
 
         const whatsappUrl = buildWhatsAppMessage(formData, cart, formatCurrency(convertToARS(finalTotal)));
@@ -130,7 +129,7 @@ const Checkout = () => {
                                 <label className={styles.label}>Teléfono *</label>
                                 <input
                                     type="text" name="phone" value={formData.phone} onChange={handleChange}
-                                    className={styles.input} placeholder="11 2345 6789"
+                                    className={styles.input} placeholder="11 3293 9545"
                                 />
                                 {errors.phone && <span className={styles.error}>{errors.phone}</span>}
                             </div>

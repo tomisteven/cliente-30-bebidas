@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronDown, FiSearch, FiShoppingBag, FiTruck, FiShield, FiStar, FiAward, FiInfo, FiKey, FiMail } from 'react-icons/fi';
 import styles from './FAQ.module.css';
+import SEO from '../../components/SEO/SEO';
 
 const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState(null);
@@ -14,67 +15,57 @@ const FAQ = () => {
             questions: [
                 {
                     q: '¿Cómo realizo una compra?',
-                    a: 'Es muy simple: navegá por nuestro catálogo, añadí tus fragancias favoritas al carrito y hacé clic en el icono de la bolsa para iniciar el checkout. Seguí los pasos para completar tus datos de envío y pago.'
+                    a: 'Es muy simple: navegá por nuestro catálogo, seleccioná tus bebidas favoritas (por unidad, pack o pallet) y añadilas al carrito. Una vez listo, hacé clic en el icono de la bolsa para iniciar el checkout. Si sos comerciante, no olvides registrarte para acceder a precios de volumen.'
                 },
                 {
-                    q: '¿Cuáles son los métodos de pago aceptados?',
-                    a: 'Aceptamos transferencias bancarias, tarjetas de crédito/débito a través de plataformas seguras y efectivo para retiros coordinados.'
+                    q: '¿Cuáles son los métodos de pago?',
+                    a: 'Para tu comodidad, aceptamos Efectivo y Transferencias bancarias. Los detalles para la transferencia se proporcionan al finalizar el pedido.'
                 }
             ]
         },
         {
-            category: 'Envíos y Seguimiento',
+            category: 'Envíos y Entregas',
             icon: <FiTruck />,
             questions: [
                 {
-                    q: '¿Realizan envíos a todo el país?',
-                    a: 'Sí, llegamos a cada rincón de Argentina a través de Correo Argentino y Andreani. El costo de envío se calcula automáticamente al ingresar tu código postal en el checkout.'
+                    q: '¿Qué zonas tienen envío sin cargo?',
+                    a: 'Contamos con envío SIN CARGO en las zonas de Villa de Mayo, Don Torcuato, Adolfo Sourdeaux y Los Polvorines.'
                 },
                 {
-                    q: '¿Cómo puedo seguir mi pedido?',
-                    a: 'Una vez que tu pedido sea despachado, recibirás un correo electrónico con el número de seguimiento y un enlace directo para monitorear el trayecto de tu paquete.'
+                    q: '¿Hacen repartos a otras zonas?',
+                    a: 'Sí, realizamos repartos en otras zonas con tarifas mínimas que dependen de la cantidad de packs solicitados. Consultanos por tu zona específica para darte el mejor costo.'
+                },
+                {
+                    q: '¿Venden por Pallet?',
+                    a: '¡Claro que sí! Somos especialistas en bulto cerrado y venta por pallet para abastecer grandes consumos o comercios a los mejores precios del mercado.'
                 }
             ]
         },
         {
-            category: 'Productos y Calidad',
-            icon: <FiShield />,
-            questions: [
-                {
-                    q: '¿Son originales los perfumes?',
-                    a: 'Absolutamente. En Al Vuelo Importados solo trabajamos con productos 100% originales importados directamente de los Emiratos Árabes y las casas de perfumería más prestigiosas.'
-                },
-                {
-                    q: '¿Qué es un perfume de "Nicho"?',
-                    a: 'Los perfumes nicho son creaciones artísticas producidas en menor escala, con ingredientes de altísima calidad y composiciones únicas que no encontrarás en la perfumería comercial masiva.'
-                },
-                {
-                    q: '¿Cómo busco productos específicos?',
-                    a: 'Podés usar la barra de búsqueda en la parte superior para buscar por marca o nombre. También contamos con filtros por categoría (Nicho, Miniaturas, Lattafa, etc.) para facilitar tu búsqueda.'
-                }
-            ]
-        },
-        {
-            category: 'Mayoristas',
+            category: 'Comercios y Almacenes',
             icon: <FiAward />,
             questions: [
                 {
-                    q: '¿Qué beneficios tengo como mayorista?',
-                    a: 'Los clientes registrados como mayoristas acceden a una lista de precios preferencial (Zona Mayorista), stock exclusivo y atención personalizada para compras por bulto.'
+                    q: '¿Venden a kioscos y almacenes?',
+                    a: 'Ese es nuestro fuerte. Somos dos emprendedores dedicados a facilitar el stock de comercios de barrio, kioscos y almacenes de la zona con precios competitivos y logística confiable.'
                 },
                 {
-                    q: '¿Hay un monto mínimo de compra mayorista?',
-                    a: 'Sí, para mantener la condición de mayorista existe un monto mínimo de compra inicial. Ponete en contacto con nuestro equipo para recibir la tabla de condiciones vigente.'
+                    q: '¿Tienen precios exclusivos para mayoristas?',
+                    a: 'Sí, contamos con escalas de precios según el volumen de compra. Al registrarte como cliente mayorista podrás ver los descuentos por pack y por pallet en todo el catálogo.'
                 }
             ]
         },
         {
-            category: 'Soporte',
+            category: 'Soporte y Contacto',
             icon: <FiMail />,
             questions: [
                 {
-                    q: '¿Cómo puedo contactarlos por otra duda?',
-                    a: 'Podés escribirnos a nuestro WhatsApp de atención al cliente o enviarnos un mail a través de nuestra sección de contacto. Respondemos todas las consultas en menos de 24hs hábiles.'
+                    q: '¿Dónde están ubicados?',
+                    a: 'Somos de Malvinas Argentinas, específicamente de la zona de Los Polvorines. Desde nuestro centro logístico distribuimos a toda la región.'
+                },
+                {
+                    q: '¿Cómo puedo contactarlos?',
+                    a: 'Podés escribirnos directamente por WhatsApp haciendo clic en el botón flotante de la web. Respondemos al toque para coordinar tu entrega.'
                 }
             ]
         }
@@ -95,9 +86,9 @@ const FAQ = () => {
     return (
         <div className={styles.faqPage}>
             <SEO
-                title="Centro de Ayuda / FAQ"
-                description="¿Tenes dudas sobre cómo comprar, envíos o medios de pago? Consultá nuestra sección de preguntas frecuentes."
-                keywords="preguntas frecuentes, ayuda, como comprar, envios argentina, pagos"
+                title="Centro de Ayuda / FAQ | 30 Bebidas"
+                description="Consultá las zonas de envío gratis, medios de pago y beneficios para comercios en nuestra distribuidora de bebidas en Malvinas Argentinas."
+                keywords="preguntas frecuentes, ayuda, envios gratis polvorines, venta pallet bebidas, distribuidora malvinas argentinas"
             />
             <header className={styles.header}>
                 <div className="container">
@@ -114,14 +105,14 @@ const FAQ = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
                     >
-                        Todo lo que necesitas saber sobre Al Vuelo Importados
+                        Todo lo que necesitás saber sobre Distribuidora 30 Bebidas
                     </motion.p>
 
                     <div className={styles.searchBox}>
                         <FiSearch className={styles.searchIcon} />
                         <input
                             type="text"
-                            placeholder="Buscá tu duda (ej: envíos, mayoristas, pagos)..."
+                            placeholder="Buscá tu duda (ej: envíos, pallet, pagos)..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className={styles.searchInput}
@@ -136,8 +127,8 @@ const FAQ = () => {
                         <div className={styles.quickHelp}>
                             <FiInfo />
                             <h3>¿Necesitás más?</h3>
-                            <p>Si no encontrás lo que buscás, nuestro equipo está listo para ayudarte.</p>
-                            <button className="premium-btn">Contactar Soporte</button>
+                            <p>Si no encontrás lo que buscás, escribinos por WhatsApp para una atención directa.</p>
+                            <button className="premium-btn">Chatea con nosotros</button>
                         </div>
                     </aside>
 

@@ -138,11 +138,11 @@ const Home = () => {
     const maxDiscount = getMaxDiscount();
 
     return (
-        <div className={styles.homeContainer}>
+        <div className={homeStyles.home}>
             <SEO
-                title="30 Bebidas | Distribuidora Mayorista y Minorista"
-                description="Líderes en distribución de gaseosas, cervezas, vinos y espirituosas en San Miguel. Ventas por mayor y menor con logística propia a todo el país."
-                keywords="distribuidora de bebidas, gaseosas mayorista, cervezas por pack, vinos por pallet, san miguel bebidas"
+                title="Distribuidora de Bebidas | Malvinas Argentinas y Zona Norte"
+                description="Tu distribuidora líder de bebidas en Los Polvorines, Villa de Mayo y Malvinas Argentinas. Precios imbatibles por pack y pallet. ¡Hacé tu pedido hoy!"
+                keywords="distribuidora de bebidas malvinas argentinas, mayorista de bebidas los polvorines, venta de bebidas por pallet buenos aires, gaseosas por mayor zona norte"
             />
             <HeroCarousel />
 
@@ -206,7 +206,7 @@ const Home = () => {
                 <div className={styles.catalogLayout}>
                     <main className={styles.mainContent}>
                         <div className={homeStyles.catalogSection}>
-                            <h1 className={homeStyles.sectionTitle}>Catálogo de Bebidas</h1>
+                            <h1 className={homeStyles.sectionTitle}>Distribuidora de Bebidas en Malvinas Argentinas</h1>
                             {loading ? (
                                 <div className={styles.loader}>Cargando catálogo...</div>
                             ) : (
@@ -250,7 +250,7 @@ const Home = () => {
                             </div>
                             <h2 className={homeStyles.exclusiveTitle}>Productos Exclusivos</h2>
                             <p className={homeStyles.exclusiveSubtitle}>
-                                Fragancias y bebidas con precios especiales solo disponibles para clientes registrados
+                                Bebidas y productos con precios especiales solo disponibles para clientes registrados
                             </p>
                         </div>
                         <div className={styles.grid} style={{ marginTop: '2rem' }}>
@@ -276,7 +276,7 @@ const Home = () => {
                                     <FiPackage /> Ofertas Exclusivas
                                 </span>
                                 <h3 className={homeStyles.comboBannerTitle}>
-                                    Combos de <span>Lujo</span>
+                                    Combos de <span>Bebidas</span>
                                 </h3>
                                 <p className={homeStyles.comboBannerText}>
                                     Descubrí nuestros packs seleccionados con descuentos especiales.

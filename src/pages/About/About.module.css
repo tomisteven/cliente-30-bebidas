@@ -1,10 +1,11 @@
 .aboutPage {
-    padding-bottom: 4rem;
+    background-color: var(--bg-color);
+    padding-bottom: 8rem;
     overflow-x: hidden;
 }
 
 .hero {
-    height: 60vh;
+    height: 80vh;
     width: 100%;
     background-size: cover;
     background-position: center;
@@ -13,13 +14,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 6rem;
+    margin-bottom: 8rem;
 }
 
 .overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), var(--bg-color));
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.4) 0%,
+            var(--bg-color) 95%);
 }
 
 .heroContent {
@@ -27,184 +30,216 @@
     z-index: 10;
     text-align: center;
     padding: 0 2rem;
-    max-width: 800px;
+    max-width: 900px;
 }
 
 .heroContent h1 {
-    font-size: 4rem;
+    font-size: 5rem;
+    font-weight: 800;
     font-family: var(--font-serif);
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
+    letter-spacing: -3px;
+    line-height: 1;
+    text-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
 .heroContent p {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.9);
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-weight: 300;
+    text-transform: uppercase;
 }
 
 .section {
-    margin-bottom: 8rem;
+    margin-bottom: 12rem;
 }
 
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 6rem;
     align-items: center;
 }
 
 .imageWrapper {
     position: relative;
-    border-radius: 2px;
+    border-radius: 24px;
 }
 
 .imageWrapper img {
     width: 100%;
     height: auto;
-    border-radius: 4px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
     position: relative;
     z-index: 2;
-    aspect-ratio: 4/3;
+    aspect-ratio: 4/5;
     object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .imageDecor {
     position: absolute;
-    top: -20px;
-    left: -20px;
+    top: -30px;
+    left: -30px;
     width: 100%;
     height: 100%;
-    border: 1px solid var(--accent-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 20px;
     z-index: 1;
-    opacity: 0.6;
+    opacity: 0.3;
 }
 
 .imageDecorReversed {
     position: absolute;
-    bottom: -20px;
-    right: -20px;
+    bottom: -30px;
+    right: -30px;
     width: 100%;
     height: 100%;
-    border: 1px solid var(--accent-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 20px;
     z-index: 1;
-    opacity: 0.6;
+    opacity: 0.3;
 }
 
 .textContent {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .tag {
     color: var(--accent-color);
-    font-size: 0.85rem;
-    letter-spacing: 3px;
-    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 5px;
+    font-weight: 700;
     text-transform: uppercase;
-}
-
-.textContent h2 {
-    font-size: 2.5rem;
-    font-family: var(--font-serif);
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.textContent p {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-
-.featuresList {
-    margin-top: 1rem;
-    display: grid;
-    gap: 1rem;
-}
-
-.feature {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
+.tag::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--accent-color);
+}
+
+.textContent h2 {
+    font-size: 3.5rem;
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.textContent p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.featuresList {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 1.2rem;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
 .icon {
+    width: 24px;
+    height: 24px;
     color: var(--accent-color);
-    font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 .feature span {
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-primary);
+    font-size: 1.1rem;
 }
 
 .stats {
     display: flex;
-    gap: 3rem;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
+    gap: 4rem;
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .statItem h3 {
-    font-size: 2rem;
-    color: var(--accent-color);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
 }
 
 .statItem p {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-secondary);
+    letter-spacing: 2px;
+    color: var(--accent-color);
+    font-weight: 600;
 }
 
 .valuesSection {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 4rem;
+    gap: 3rem;
+    margin-top: 6rem;
 }
 
 .valueCard {
-    background: var(--card-bg);
-    padding: 3rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(5px);
+    padding: 4rem 2.5rem;
     text-align: center;
-    border: 1px solid var(--border-color);
-    transition: var(--transition-smooth);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .valueCard:hover {
+    background: rgba(255, 255, 255, 0.04);
     border-color: var(--accent-color);
-    transform: translateY(-5px);
+    transform: translateY(-10px);
 }
 
 .valueIcon {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--accent-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 15px rgba(197, 160, 89, 0.2));
 }
 
 .valueCard h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
     color: var(--text-primary);
+    font-family: var(--font-serif);
 }
 
 .valueCard p {
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1100px) {
     .grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 5rem;
     }
 
     .reversed .grid {
@@ -213,29 +248,36 @@
     }
 
     .heroContent h1 {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
 
+    .imageWrapper {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 992px) {
     .valuesSection {
         grid-template-columns: 1fr;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
     .hero {
-        height: 50vh;
+        height: 60vh;
     }
 
     .heroContent h1 {
-        font-size: 2.2rem;
+        font-size: 2.8rem;
     }
 
     .textContent h2 {
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
 
     .stats {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 2rem;
     }
 }

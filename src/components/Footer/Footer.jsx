@@ -61,7 +61,7 @@ const Footer = () => {
                             <li>San Miguel, Buenos Aires</li>
                             <li>Atención Mayorista y Minorista</li>
                             <li>ventas@30bebidas.com</li>
-                            <li>+54 9 11 3293 9545</li>
+                            <li>+54 9 11 3293-9545</li>
                         </ul>
                         <a
                             href="https://wa.me/5491132939545"
