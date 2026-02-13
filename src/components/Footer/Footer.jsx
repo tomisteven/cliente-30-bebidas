@@ -11,7 +11,7 @@ const Footer = () => {
         "image": "https://30bebidas.com/logo.png",
         "@id": "https://30bebidas.com",
         "url": "https://30bebidas.com",
-        "telephone": "+5491122921805",
+        "telephone": "+5491132939545",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Distribuidora San Miguel",
@@ -61,10 +61,10 @@ const Footer = () => {
                             <li>San Miguel, Buenos Aires</li>
                             <li>Atención Mayorista y Minorista</li>
                             <li>ventas@30bebidas.com</li>
-                            <li>+54 9 11 2292 1805</li>
+                            <li>+54 9 11 3293 9545</li>
                         </ul>
                         <a
-                            href="https://wa.me/5491122921805"
+                            href="https://wa.me/5491132939545"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.whatsapp}

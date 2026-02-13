@@ -56,27 +56,31 @@ export const CartProvider = ({ children }) => {
     const getItemPrice = (item) => {
         if (item.type === 'combo') return item.finalPrice;
 
-        // Lógica de Precios Mayoristas de Bebidas
-        const wholesale = item.wholesale || {};
-
+        // Pack Price (Standard 'precio')
         if (item.unitType === 'pack') {
-            return wholesale.pack?.price || (item.precio * (wholesale.pack?.unitsPerPack || 6));
+            return item.precio;
         }
 
+        // Pallet Price
         if (item.unitType === 'pallet') {
-            return wholesale.pallet?.price || item.precio; // Depende de cómo se defina el precio del pallet
+            return (item.precioPallet || 0) * (item.packsPorPallet || 1);
         }
 
-        // Si es unidad, aplicar bulkPrices si existen
-        if (!item.bulkPrices || item.bulkPrices.length === 0) {
-            return wholesale.unit?.price || item.precio;
+        // Unit Price (with bulk logic)
+        if (item.unitType === 'unit') {
+            // Si hay precios por volumen escalonados
+            if (item.bulkPrices && item.bulkPrices.length > 0) {
+                const applicablePrice = item.bulkPrices
+                    .filter(bp => item.quantity >= bp.minQuantity)
+                    .sort((a, b) => b.minQuantity - a.minQuantity)[0];
+
+                if (applicablePrice) return applicablePrice.price;
+            }
+            // Precio unitario base
+            return item.precioUnidad || 0;
         }
 
-        const applicablePrice = item.bulkPrices
-            .filter(bp => item.quantity >= bp.minQuantity)
-            .sort((a, b) => b.minQuantity - a.minQuantity)[0];
-
-        return applicablePrice ? applicablePrice.price : (wholesale.unit?.price || item.precio);
+        return item.precio;
     };
 
     const cartTotal = cart.reduce((total, item) => total + (getItemPrice(item) * item.quantity), 0);

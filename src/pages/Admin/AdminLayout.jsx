@@ -8,8 +8,9 @@ import orderApi from '../../api/order.api';
 import discountApi from '../../api/discount.api';
 import emailApi from '../../api/email.api';
 import { useNotification } from '../../context/NotificationContext';
-import { FiPlus, FiBox, FiPackage, FiUsers, FiShoppingBag, FiMail, FiTag, FiSettings, FiX, FiRefreshCw, FiTruck } from 'react-icons/fi';
+import { FiPlus, FiBox, FiPackage, FiUsers, FiShoppingBag, FiMail, FiTag, FiSettings, FiX, FiRefreshCw, FiTruck, FiPieChart } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import ProductHistoryModal from '../../components/Admin/ProductHistoryModal';
 import styles from './AdminDashboard.module.css';
 
 const AdminLayout = () => {
@@ -21,6 +22,10 @@ const AdminLayout = () => {
     const [discounts, setDiscounts] = useState([]);
     const [loading, setLoading] = useState(true);
     const { showNotification } = useNotification();
+
+    // History Modal State
+    const [historyModalOpen, setHistoryModalOpen] = useState(false);
+    const [selectedProductForHistory, setSelectedProductForHistory] = useState(null);
 
     // Persistent Filters for Products Tab - Initialize from sessionStorage
     const [adminSearch, setAdminSearch] = useState(sessionStorage.getItem('adminProductSearch') || '');
@@ -244,6 +249,12 @@ const AdminLayout = () => {
                         <FiPackage /> Combos ({combos.length})
                     </NavLink>
                     <NavLink
+                        to="/admin/comercios"
+                        className={({ isActive }) => `${styles.tab} ${isActive ? styles.activeTab : ''}`}
+                    >
+                        <FiUsers /> Comercios ({users.length})
+                    </NavLink>
+                    <NavLink
                         to="/admin/usuarios"
                         className={({ isActive }) => `${styles.tab} ${isActive ? styles.activeTab : ''}`}
                     >
@@ -267,11 +278,17 @@ const AdminLayout = () => {
                     >
                         <FiTag /> Cupones ({discounts.length})
                     </NavLink>
-                    <NavLink
+                    {/* <NavLink
                         to="/admin/configuracion"
                         className={({ isActive }) => `${styles.tab} ${isActive ? styles.activeTab : ''}`}
                     >
                         <FiSettings /> Configuración
+                    </NavLink> */}
+                    <NavLink
+                        to="/admin/reportes"
+                        className={({ isActive }) => `${styles.tab} ${isActive ? styles.activeTab : ''}`}
+                    >
+                        <FiPieChart /> Reportes
                     </NavLink>
                     <NavLink
                         to="/admin/proveedores"
@@ -300,10 +317,23 @@ const AdminLayout = () => {
                         onUpdateStatus: handleUpdateStatus,
                         onDeleteDiscount: handleDeleteDiscount,
                         onCreateCoupon: openGenericCouponModal,
+                        onOpenHistory: (product) => {
+                            setSelectedUser(product); // Reusing state var or creating new one? Better create new one.
+                            // Actually wait, I need to add state for this.
+                            // Let's use setSelectedProductForHistory defined below.
+                            setSelectedProductForHistory(product);
+                            setHistoryModalOpen(true);
+                        },
                         refreshData: fetchData
                     }} />
                 </div>
             </div>
+
+            <ProductHistoryModal
+                isOpen={historyModalOpen}
+                onClose={() => setHistoryModalOpen(false)}
+                product={selectedProductForHistory}
+            />
 
             {/* Modal de Cupón con Animaciones */}
             <AnimatePresence>

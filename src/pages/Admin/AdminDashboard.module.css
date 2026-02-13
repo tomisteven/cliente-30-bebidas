@@ -105,6 +105,12 @@
     background-color: rgba(68, 255, 68, 0.1);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.activeStatus:hover {
+    background-color: rgba(68, 255, 68, 0.2);
+    transform: scale(1.05);
 }
 
 .inactiveStatus {
@@ -113,6 +119,12 @@
     background-color: rgba(255, 68, 68, 0.1);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.inactiveStatus:hover {
+    background-color: rgba(255, 68, 68, 0.2);
+    transform: scale(1.05);
 }
 
 .tableActions {

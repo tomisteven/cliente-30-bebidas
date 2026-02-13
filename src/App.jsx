@@ -41,6 +41,10 @@ import SettingsTab from './pages/Admin/components/SettingsTab';
 import SuppliersTab from './pages/Admin/components/SuppliersTab';
 import SupplierDetail from './pages/Admin/components/SupplierDetail';
 
+import AdminReports from './pages/Admin/AdminReports';
+import AdminCommerces from './pages/Admin/AdminCommerces';
+import AdminOrderCreate from './pages/Admin/AdminOrderCreate';
+
 function App() {
     const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -68,6 +72,7 @@ function App() {
                                                 <Route path="/miniaturas" element={<Miniaturas />} />
                                                 <Route path="/faq" element={<FAQ />} />
                                                 <Route path="/nosotros" element={<About />} />
+                                                <Route path="/comercio" element={<Navigate to="/admin/comercios" replace />} />
 
                                                 {/* Admin Routes - Nested */}
                                                 <Route path="/admin" element={
@@ -78,6 +83,8 @@ function App() {
                                                     <Route index element={<Navigate to="/admin/productos" replace />} />
                                                     <Route path="productos" element={<ProductsTab />} />
                                                     <Route path="combos" element={<CombosTab />} />
+                                                    <Route path="comercios" element={<AdminCommerces />} />
+                                                    <Route path="comercio" element={<Navigate to="/admin/comercios" replace />} />
                                                     <Route path="usuarios" element={<UsersTab />} />
                                                     <Route path="pedidos" element={<OrdersTab />} />
                                                     <Route path="emails" element={<EmailsTab />} />
@@ -85,7 +92,14 @@ function App() {
                                                     <Route path="configuracion" element={<SettingsTab />} />
                                                     <Route path="proveedores" element={<SuppliersTab />} />
                                                     <Route path="proveedores/:id" element={<SupplierDetail />} />
+                                                    <Route path="reportes" element={<AdminReports />} />
                                                 </Route>
+
+                                                <Route path="/admin/pedidos/nuevo" element={
+                                                    <ProtectedRoute adminOnly>
+                                                        <AdminOrderCreate />
+                                                    </ProtectedRoute>
+                                                } />
 
                                                 {/* Admin Forms - Standalone */}
                                                 <Route path="/admin/crear-producto" element={

@@ -3,18 +3,18 @@ import { FaWhatsapp } from 'react-icons/fa';
 import styles from './WhatsAppFloat.module.css';
 
 const WhatsAppFloat = () => {
-    const channelUrl = 'https://whatsapp.com/channel/0029VbBKXH8HFxP7qVpbCx1I';
+    const whatsappUrl = 'https://wa.me/5491132939545';
 
     return (
         <a
-            href={channelUrl}
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.floatBtn}
-            aria-label="Únete al grupo de WhatsApp"
+            aria-label="Contáctanos por WhatsApp"
         >
             <FaWhatsapp className={styles.icon} />
-            <span className={styles.tooltip}>¡Únete al canal mayorista!</span>
+            <span className={styles.tooltip}>¡Contáctanos por WhatsApp!</span>
         </a>
     );
 };

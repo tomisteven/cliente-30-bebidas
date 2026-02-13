@@ -9,11 +9,14 @@ import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product, viewMode = 'grid', isExpanded, onToggleAccordion }) => {
     const { addToCart } = useCart();
-    const { convertToARS, calculateSuggestedPrice } = useCurrency();
     const { addToast } = useToast();
 
     // internal state for selection
-    const [selectedUnitType, setSelectedUnitType] = useState('unit'); // 'unit', 'pack', 'pallet'
+    const [selectedUnitType, setSelectedUnitType] = useState('pack'); // Default to 'pack' as it is the main price usually? Or 'unit'? 
+    // User complaint implies 'unit' showed huge price. If 'pack' is main usage, defaulting to 'pack' is safe, or 'unit' if available. 
+    // Let's try to default to 'pack' if available, else 'unit'.
+    // Actually, initializing state based on props is better but simple string is fine.
+
     const [internalExpanded, setInternalExpanded] = useState(false);
 
     const handleAddToCart = () => {
@@ -39,13 +42,15 @@ const ProductCard = ({ product, viewMode = 'grid', isExpanded, onToggleAccordion
 
     const isList = viewMode === 'list';
 
-    // Beverage Wholesale Logic
-    const wholesale = product.wholesale || { unit: { available: true } };
+    // Pricing Logic
+    const unitPrice = product.precioUnidad || 0;
+    const packPrice = product.precio || 0; // "Precio" base es el Precio Pack
+    const palletPrice = product.precioPallet || 0;
 
     const getCurrentPrice = () => {
-        if (selectedUnitType === 'pack') return wholesale.pack?.price || (product.precio * (wholesale.pack?.unitsPerPack || 6));
-        if (selectedUnitType === 'pallet') return wholesale.pallet?.price || (product.precio * (wholesale.pallet?.unitsPerPallet || 1));
-        return wholesale.unit?.price || product.precio;
+        if (selectedUnitType === 'unit') return unitPrice;
+        if (selectedUnitType === 'pallet') return (palletPrice * (product.packsPorPallet || 1));
+        return packPrice; // Default 'pack'
     };
 
     const currentPrice = getCurrentPrice();
@@ -88,23 +93,23 @@ const ProductCard = ({ product, viewMode = 'grid', isExpanded, onToggleAccordion
                 </div>
 
                 <div className={styles.unitSelector}>
-                    {wholesale.unit?.available !== false && (
+                    {unitPrice > 0 && (
                         <button
                             className={`${styles.unitTab} ${selectedUnitType === 'unit' ? styles.unitTabActive : ''}`}
                             onClick={() => setSelectedUnitType('unit')}
                         >
-                            <FiBox /> x1
+                            <FiBox /> Unitario
                         </button>
                     )}
-                    {wholesale.pack?.available && (
+                    {packPrice > 0 && (
                         <button
                             className={`${styles.unitTab} ${selectedUnitType === 'pack' ? styles.unitTabActive : ''}`}
                             onClick={() => setSelectedUnitType('pack')}
                         >
-                            <FiPackage /> x{wholesale.pack.unitsPerPack}
+                            <FiPackage /> Pack {product.unidadesPorPack > 1 && <span style={{ fontSize: '0.8em', marginLeft: '4px' }}>x{product.unidadesPorPack}</span>}
                         </button>
                     )}
-                    {wholesale.pallet?.available && (
+                    {palletPrice > 0 && (
                         <button
                             className={`${styles.unitTab} ${selectedUnitType === 'pallet' ? styles.unitTabActive : ''}`}
                             onClick={() => setSelectedUnitType('pallet')}
@@ -118,18 +123,18 @@ const ProductCard = ({ product, viewMode = 'grid', isExpanded, onToggleAccordion
                     <div className={styles.prices}>
                         <div className={styles.priceRow}>
                             <span className={styles.priceLabel}>PRECIO {selectedUnitType.toUpperCase()}:</span>
-                            <span className={styles.price}>{formatCurrency(convertToARS(currentPrice))}</span>
+                            <span className={styles.price}>{formatCurrency(currentPrice)}</span>
                         </div>
-                        <div className={styles.suggestedRow}>
-                            <span className={styles.suggestedLabel}>UNITARIO APROX:</span>
-                            <span className={styles.suggestedAmount}>
-                                {formatCurrency(convertToARS(
-                                    selectedUnitType === 'pack' ? currentPrice / (wholesale.pack?.unitsPerPack || 1) :
-                                        selectedUnitType === 'pallet' ? currentPrice / (wholesale.pallet?.unitsPerPallet || 1) :
-                                            currentPrice
-                                ))}
-                            </span>
-                        </div>
+                        {selectedUnitType === 'pallet' && (
+                            <div className={styles.suggestedRow}>
+                                <span className={styles.suggestedLabel} style={{ color: '#64748b' }}>Contiene {product.packsPorPallet || 1} packs</span>
+                            </div>
+                        )}
+                        {selectedUnitType === 'pack' && product.unidadesPorPack > 1 && (
+                            <div className={styles.suggestedRow}>
+                                <span className={styles.suggestedLabel} style={{ color: '#64748b' }}>Contiene {product.unidadesPorPack} unidades</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -170,7 +175,7 @@ const ProductCard = ({ product, viewMode = 'grid', isExpanded, onToggleAccordion
                                                         </div>
                                                         <div className={styles.bulkPriceInfo}>
                                                             <span className={styles.bulkPriceValue}>
-                                                                {formatCurrency(convertToARS(bp.price))}
+                                                                {formatCurrency(bp.price)}
                                                             </span>
                                                         </div>
                                                         <div className={`${styles.bulkSavings} ${Number(savings) >= 5 ? styles.bulkSavingsHigh : ''}`}>
@@ -186,12 +191,7 @@ const ProductCard = ({ product, viewMode = 'grid', isExpanded, onToggleAccordion
                     </div>
                 )}
 
-                {selectedUnitType === 'pallet' && (
-                    <div className={styles.palletInfo}>
-                        <FiInfo />
-                        <span>Contiene {wholesale.pallet.unitsPerPallet} u. ({wholesale.pallet.packsPerPallet} packs)</span>
-                    </div>
-                )}
+
 
                 {isList && (
                     <button

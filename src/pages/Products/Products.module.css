@@ -25,12 +25,13 @@
 
 .controlsSection {
     position: sticky;
-    top: 118px;
-    z-index: 100;
+    top: 70px;
+    z-index: 900;
     padding: 1rem;
     background-color: var(--bg-color);
     border-bottom: 1px solid var(--border-color);
     width: 100%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .controlsContainer {
@@ -305,7 +306,7 @@
     }
 
     .controlsSection {
-        top: 108px;
+        top: 70px;
         padding: 0.8rem;
     }
 
@@ -351,7 +352,7 @@
 
 @media (max-width: 600px) {
     .controlsSection {
-        top: 108px;
+        top: 70px;
     }
 
     .filterGroup {

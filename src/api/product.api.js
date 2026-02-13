@@ -1,7 +1,10 @@
 import api from './api';
 
 export const getProducts = async (params) => {
-    const response = await api.get('/products', { params });
+    const response = await api.get('/products', { 
+        params,
+        headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+    });
     return response.data;
 };
 
@@ -42,5 +45,10 @@ export const toggleProductStatus = async (id) => {
 
 export const getExclusiveProducts = async () => {
     const response = await api.get('/products', { params: { exclusive: true } });
+    return response.data;
+};
+
+export const getProductHistoryStats = async (id) => {
+    const response = await api.get(`/products/${id}/history-stats`);
     return response.data;
 };

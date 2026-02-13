@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
-import { FiEdit, FiTrash2, FiSearch, FiPlus, FiX } from 'react-icons/fi';
+import { FiEdit, FiTrash2, FiSearch, FiPlus, FiX, FiTrendingUp } from 'react-icons/fi';
 import { formatCurrency } from '../../../utils/currencyFormatter';
 import styles from '../AdminDashboard.module.css';
 
@@ -9,6 +9,7 @@ const ProductsTab = () => {
         products,
         loading,
         onDeleteProduct,
+        onOpenHistory,
         adminSearch,
         setAdminSearch,
         adminCategory,
@@ -101,6 +102,24 @@ const ProductsTab = () => {
                             </td>
                             <td>
                                 <div className={styles.tableActions}>
+                                    <button
+                                        onClick={() => onOpenHistory(product)}
+                                        className={styles.editBtn}
+                                        style={{
+                                            color: '#1976d2',
+                                            background: '#e3f2fd',
+                                            padding: '0.4rem',
+                                            borderRadius: '6px',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            minWidth: '32px',
+                                            minHeight: '32px'
+                                        }}
+                                        title="Ver historial de precios"
+                                    >
+                                        <FiTrendingUp />
+                                    </button>
                                     <Link to={`/admin/editar-producto/${product.slug}`} className={styles.editBtn}>
                                         <FiEdit />
                                     </Link>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { createProduct, updateProduct, getProductBySlug, getCategories, createCategory } from '../../api/product.api';
-import { FiPlus, FiMinus, FiTrash2, FiArrowLeft, FiRefreshCw, FiCheck, FiX } from 'react-icons/fi';
-import { useCurrency } from '../../context/CurrencyContext';
+import { FiPlus, FiMinus, FiTrash2, FiArrowLeft, FiRefreshCw, FiCheck, FiX, FiBox, FiPackage, FiTruck } from 'react-icons/fi';
 import { formatCurrency } from '../../utils/currencyFormatter';
 import { useNotification } from '../../context/NotificationContext';
 import styles from './ProductForm.module.css';
@@ -11,7 +10,6 @@ const ProductForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const { calculateSuggestedPrice, convertToARS } = useCurrency();
     const { showNotification } = useNotification();
     const isEditing = !!id;
 
@@ -21,19 +19,19 @@ const ProductForm = () => {
         sku: '',
         descripcion: '',
         precio: '',
+        unidadesPorPack: '',
+        precioUnidad: '',
+        precioPallet: '',
+        packsPorPallet: '',
+        precioCosto: '',
         precioCard: '',
         stock: 0,
-        categoria: 'Lattafa',
+        categoria: '',
         imagenes: [''],
         bulkPrices: [],
         isExclusive: false,
         precioExclusivo: '',
-        sellType: 'perfume',
-        decantOptions: {
-            available: false,
-            description: '',
-            sizes: []
-        }
+        isActive: true,
     });
 
     const [categories, setCategories] = useState([]);
@@ -64,12 +62,17 @@ const ProductForm = () => {
                     setFormData({
                         ...data,
                         precio: data.precio.toString(),
+                        unidadesPorPack: data.unidadesPorPack?.toString() || '',
+                        precioUnidad: data.precioUnidad?.toString() || '',
+                        precioPallet: data.precioPallet?.toString() || '',
+                        packsPorPallet: data.packsPorPallet?.toString() || '',
+                        precioCosto: data.precioCosto?.toString() || '',
                         precioCard: data.precioCard?.toString() || '',
                         imagenes: data.imagenes.length > 0 ? data.imagenes : [''],
                         isExclusive: data.isExclusive || false,
+                        isActive: data.isActive !== false,
                         precioExclusivo: data.precioExclusivo?.toString() || '',
-                        sellType: data.sellType || 'perfume',
-                        decantOptions: data.decantOptions || { available: false, description: '', sizes: [] }
+                        bulkPrices: data.bulkPrices || []
                     });
                 } catch (error) {
                     console.error('Error fetching product:', error);
@@ -150,40 +153,6 @@ const ProductForm = () => {
         setFormData(prev => ({ ...prev, sku: newSku }));
     };
 
-    const addDecantSize = () => {
-        setFormData(prev => ({
-            ...prev,
-            decantOptions: {
-                ...prev.decantOptions,
-                available: true,
-                sizes: [...prev.decantOptions.sizes, { size: '', price: '', stock: '' }]
-            }
-        }));
-    };
-
-    const removeDecantSize = (index) => {
-        const newSizes = formData.decantOptions.sizes.filter((_, i) => i !== index);
-        setFormData(prev => ({
-            ...prev,
-            decantOptions: {
-                ...prev.decantOptions,
-                sizes: newSizes
-            }
-        }));
-    };
-
-    const handleDecantSizeChange = (index, field, value) => {
-        const newSizes = [...formData.decantOptions.sizes];
-        newSizes[index][field] = value;
-        setFormData(prev => ({
-            ...prev,
-            decantOptions: {
-                ...prev.decantOptions,
-                sizes: newSizes
-            }
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -198,23 +167,18 @@ const ProductForm = () => {
             const payload = {
                 ...formData,
                 precio: Number(formData.precio),
+                unidadesPorPack: Number(formData.unidadesPorPack) || 1,
+                precioUnidad: formData.precioUnidad ? Number(formData.precioUnidad) : 0,
+                precioPallet: formData.precioPallet ? Number(formData.precioPallet) : 0,
+                packsPorPallet: Number(formData.packsPorPallet) || 1,
+                precioCosto: formData.precioCosto ? Number(formData.precioCosto) : 0,
                 precioCard: Number(formData.precioCard),
                 stock: Number(formData.stock),
                 imagenes: formData.imagenes.filter(img => img.trim() !== ''),
                 bulkPrices: cleanedBulkPrices,
                 isExclusive: formData.isExclusive,
+                isActive: formData.isActive,
                 precioExclusivo: formData.precioExclusivo ? Number(formData.precioExclusivo) : null,
-                decantOptions: {
-                    ...formData.decantOptions,
-                    available: formData.sellType !== 'perfume',
-                    sizes: formData.decantOptions.sizes
-                        .filter(s => s.size && s.price)
-                        .map(s => ({
-                            size: Number(s.size),
-                            price: Number(s.price),
-                            stock: Number(s.stock) || 0
-                        }))
-                }
             };
 
             if (isEditing) {
@@ -240,7 +204,21 @@ const ProductForm = () => {
                     <FiArrowLeft /> Volver al Dashboard
                 </button>
 
-                <h1 className={styles.title}>{isEditing ? 'Editar Producto' : 'Crear Nuevo Producto'}</h1>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                    <h1 className={styles.title} style={{ marginBottom: 0 }}>{isEditing ? 'Editar Producto' : 'Crear Nuevo Producto'}</h1>
+
+                    <label className={`${styles.statusToggle} ${formData.isActive ? styles.statusToggleActive : ''}`}>
+                        <input
+                            type="checkbox"
+                            name="isActive"
+                            checked={formData.isActive}
+                            onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
+                        />
+                        <span>
+                            {formData.isActive ? 'Producto ACTIVO' : 'Producto PAUSADO'}
+                        </span>
+                    </label>
+                </div>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.section}>
@@ -327,6 +305,7 @@ const ProductForm = () => {
                                 ) : (
                                     <div className={styles.categorySelectWrapper}>
                                         <select name="categoria" value={formData.categoria} onChange={handleChange}>
+                                            <option value="">Seleccionar Categoría</option>
                                             {categories.map(cat => (
                                                 <option key={cat} value={cat}>{cat}</option>
                                             ))}
@@ -369,118 +348,160 @@ const ProductForm = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className={styles.formGroup}>
-                                <label>Tipo de Venta</label>
-                                <select name="sellType" value={formData.sellType} onChange={handleChange}>
-                                    <option value="perfume">Solo Perfume Completo</option>
-                                    <option value="decant">Solo Decant</option>
-                                    <option value="both">Ambos (Perfume + Decant)</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
 
-                    {(formData.sellType === 'decant' || formData.sellType === 'both') && (
-                        <div className={styles.section}>
-                            <div className={styles.sectionHeader}>
-                                <h2 className={styles.sectionTitle}>💧 Opciones de Decant</h2>
-                                <button type="button" onClick={addDecantSize} className={styles.addBtn}>
-                                    <FiPlus /> Agregar Tamaño
-                                </button>
-                            </div>
-
-                            <div className={styles.formGroup} style={{ marginBottom: '1.5rem' }}>
-                                <label>Descripción del decant</label>
-                                <input
-                                    type="text"
-                                    value={formData.decantOptions.description}
-                                    onChange={(e) => setFormData(prev => ({
-                                        ...prev,
-                                        decantOptions: { ...prev.decantOptions, description: e.target.value }
-                                    }))}
-                                    placeholder="ej: Atomizador de vidrio con spray"
-                                />
-                            </div>
-
-                            {formData.decantOptions.sizes.length === 0 ? (
-                                <div className={styles.emptyDecants}>
-                                    <p>No hay tamaños de decant configurados.</p>
-                                    <p>Hacé clic en "+ Agregar Tamaño" para comenzar.</p>
-                                </div>
-                            ) : (
-                                <div className={styles.decantGrid}>
-                                    {formData.decantOptions.sizes.map((s, index) => (
-                                        <div key={index} className={styles.decantCard}>
-                                            <div className={styles.decantCardHeader}>
-                                                <span className={styles.decantCardNumber}>#{index + 1}</span>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeDecantSize(index)}
-                                                    className={styles.decantRemoveBtn}
-                                                    title="Eliminar tamaño"
-                                                >
-                                                    <FiTrash2 />
-                                                </button>
-                                            </div>
-                                            <div className={styles.decantCardBody}>
-                                                <div className={styles.formGroup}>
-                                                    <label>ML</label>
-                                                    <input
-                                                        type="number"
-                                                        value={s.size}
-                                                        onChange={(e) => handleDecantSizeChange(index, 'size', e.target.value)}
-                                                        placeholder="5"
-                                                        min="1"
-                                                    />
-                                                </div>
-                                                <div className={styles.formGroup}>
-                                                    <label>Precio USD</label>
-                                                    <input
-                                                        type="number"
-                                                        value={s.price}
-                                                        onChange={(e) => handleDecantSizeChange(index, 'price', e.target.value)}
-                                                        placeholder="12"
-                                                        min="0"
-                                                        step="0.01"
-                                                    />
-                                                </div>
-                                                <div className={styles.formGroup}>
-                                                    <label>Stock</label>
-                                                    <input
-                                                        type="number"
-                                                        value={s.stock}
-                                                        onChange={(e) => handleDecantSizeChange(index, 'stock', e.target.value)}
-                                                        placeholder="20"
-                                                        min="0"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    )}
-
                     <div className={styles.section}>
-                        <h2 className={styles.sectionTitle}>Precios (USD)</h2>
-                        <p className={styles.infoText}>Los precios se ingresan en DÓLARES y se mostrarán en PESOS al cliente según la cotización del día.</p>
+                        <h2 className={styles.sectionTitle}>Precios</h2>
+                        <p className={styles.infoText}>Los precios se expresan en PESOS ($).</p>
 
-                        <div className={styles.formGroup}>
-                            <label>Precio Efectivo/Transf. (USD)</label>
-                            <input type="number" name="precio" value={formData.precio} onChange={handleChange} required />
-                            {formData.precio && (
-                                <div className={styles.suggestedPreview}>
-                                    <span>Precio sugerido individual:</span>
-                                    <strong>{formatCurrency(calculateSuggestedPrice(Number(formData.precio)))} USD</strong>
-                                    <small>({formatCurrency(convertToARS(calculateSuggestedPrice(Number(formData.precio))))} ARS)</small>
-                                </div>
-                            )}
+
+
+                        <div className={styles.formGroup} style={{ marginBottom: '2rem' }}>
+                            <label style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>Costo por Pack (Base para ganancias) ($)</label>
+                            <input
+                                type="number"
+                                name="precioCosto"
+                                value={formData.precioCosto}
+                                onChange={handleChange}
+                                placeholder="Ingrese el costo del pack (ej: 19100)"
+                                style={{
+                                    padding: '1rem',
+                                    fontSize: '1.2rem',
+                                    fontWeight: 'bold',
+                                    color: '#0f172a',
+                                    border: '1px solid #cbd5e1',
+                                    backgroundColor: '#f1f5f9'
+                                }}
+                            />
+                            <small style={{ color: '#64748b', marginTop: '0.5rem', display: 'block' }}>* Este costo se usará para calcular tus ganancias en packs, pallets y unidades.</small>
                         </div>
-                        {/* <div className={styles.formGroup}>
-                                <label>Precio con Tarjeta (USD)</label>
-                                <input type="number" name="precioCard" value={formData.precioCard} onChange={handleChange} />
-                            </div> */}
+
+                        <div className={styles.pricingContainer}>
+                            {/* Top Row: Pack & Pallet */}
+                            <div className={styles.pricingTopRow}>
+                                {/* Pack (Principal) */}
+                                <div className={`${styles.pricingCard} ${styles.cardPack}`}>
+                                    <h4><FiPackage /> Pack</h4>
+                                    <div className={styles.formGroup}>
+                                        <label>Precio Venta Pack (Público) ($)</label>
+                                        <input
+                                            type="number"
+                                            name="precio"
+                                            value={formData.precio}
+                                            onChange={handleChange}
+                                            required
+                                            placeholder="Precio de venta al público"
+                                        />
+                                    </div>
+
+                                    <div className={styles.formGroup}>
+                                        <label>Unidades por Pack</label>
+                                        <input
+                                            type="number"
+                                            name="unidadesPorPack"
+                                            value={formData.unidadesPorPack}
+                                            onChange={handleChange}
+                                            placeholder="Ej: 6"
+                                        />
+                                    </div>
+                                    {formData.precio && formData.unidadesPorPack && (
+                                        <div className={styles.helperText}>
+                                            <span>Unitario implícito:</span>
+                                            <span className={styles.priceHighlight}>
+                                                {formatCurrency(Number(formData.precio) / Number(formData.unidadesPorPack))}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {formData.precio && formData.precioCosto && (
+                                        <div className={styles.helperText} style={{ borderTop: 'none', paddingTop: 0, marginTop: '0.5rem', color: Number(formData.precio) > Number(formData.precioCosto) ? '#16a34a' : '#dc2626' }}>
+                                            <span>Ganancia x Pack:</span>
+                                            <span style={{ fontWeight: 600 }}>
+                                                {formatCurrency(Number(formData.precio) - Number(formData.precioCosto))}
+                                                {Number(formData.precioCosto) > 0 && (
+                                                    <small style={{ marginLeft: '4px', opacity: 0.8 }}>
+                                                        ({((Number(formData.precio) - Number(formData.precioCosto)) / Number(formData.precioCosto) * 100).toFixed(1)}%)
+                                                    </small>
+                                                )}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Pallet */}
+                                <div className={`${styles.pricingCard} ${styles.cardPallet}`}>
+                                    <h4><FiTruck /> Pallet</h4>
+                                    <div className={styles.formGroup}>
+                                        <label>Precio Venta Pack (Mayorista) ($)</label>
+                                        <input
+                                            type="number"
+                                            name="precioPallet"
+                                            value={formData.precioPallet}
+                                            onChange={handleChange}
+                                            placeholder="Precio venta por pack en pallet"
+                                        />
+                                    </div>
+                                    <div className={styles.formGroup}>
+                                        <label>Cantidad Packs en Pallet</label>
+                                        <input
+                                            type="number"
+                                            name="packsPorPallet"
+                                            value={formData.packsPorPallet}
+                                            onChange={handleChange}
+                                            placeholder="Ej: 50"
+                                        />
+                                    </div>
+                                    {formData.precioPallet && formData.packsPorPallet && (
+                                        <div className={styles.helperText}>
+                                            <span>Total Pallet:</span>
+                                            <span className={styles.priceHighlight}>
+                                                {formatCurrency(Number(formData.precioPallet) * Number(formData.packsPorPallet))}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {formData.precioPallet && formData.precioCosto && formData.packsPorPallet && (
+                                        <div className={styles.helperText} style={{ borderTop: 'none', paddingTop: 0, marginTop: '0.5rem', color: Number(formData.precioPallet) > Number(formData.precioCosto) ? '#16a34a' : '#dc2626' }}>
+                                            <span>Ganancia Total Pallet:</span>
+                                            <span style={{ fontWeight: 600 }}>
+                                                {formatCurrency((Number(formData.precioPallet) - Number(formData.precioCosto)) * Number(formData.packsPorPallet))}
+                                                <small style={{ marginLeft: '4px', opacity: 0.8 }}>
+                                                    ({((Number(formData.precioPallet) - Number(formData.precioCosto)) / Number(formData.precioCosto) * 100).toFixed(1)}%)
+                                                </small>
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Bottom Row: Unitario (Full Width) */}
+                            <div className={`${styles.pricingCard} ${styles.cardUnit} ${styles.pricingFullRow}`}>
+                                <h4><FiBox /> Unitario</h4>
+                                <div className={styles.formGroup}>
+                                    <label>Precio Unitario ($)</label>
+                                    <input
+                                        type="number"
+                                        name="precioUnidad"
+                                        value={formData.precioUnidad}
+                                        onChange={handleChange}
+                                        placeholder="Precio por unidad suelta"
+                                    />
+                                </div>
+                                {formData.precioUnidad && formData.precioCosto && formData.unidadesPorPack && (
+                                    <div className={styles.helperText} style={{ borderTop: 'none', paddingTop: 0, marginTop: '0.5rem', color: Number(formData.precioUnidad) > (Number(formData.precioCosto) / Number(formData.unidadesPorPack)) ? '#16a34a' : '#dc2626' }}>
+                                        <span>Ganancia x Unidad:</span>
+                                        <span style={{ fontWeight: 600 }}>
+                                            {formatCurrency(Number(formData.precioUnidad) - (Number(formData.precioCosto) / Number(formData.unidadesPorPack)))}
+                                            {Number(formData.precioCosto) > 0 && (
+                                                <small style={{ marginLeft: '4px', opacity: 0.8 }}>
+                                                    ({((Number(formData.precioUnidad) - (Number(formData.precioCosto) / Number(formData.unidadesPorPack))) / (Number(formData.precioCosto) / Number(formData.unidadesPorPack)) * 100).toFixed(1)}%)
+                                                </small>
+                                            )}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
 
                     </div>
 
@@ -503,7 +524,7 @@ const ProductForm = () => {
                             </div>
                             {formData.isExclusive && (
                                 <div className={styles.formGroup}>
-                                    <label>Precio Exclusivo Mayorista (USD)</label>
+                                    <label>Precio Exclusivo Mayorista ($)</label>
                                     <input
                                         type="number"
                                         name="precioExclusivo"
@@ -555,7 +576,7 @@ const ProductForm = () => {
 
                     <div className={styles.section}>
                         <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Precios por Mayor (Opcional)</h2>
+                            <h2 className={styles.sectionTitle}>Precios por Cantidad (Mayorista)</h2>
                             <button type="button" onClick={addBulkPrice} className={styles.addBtn}>
                                 <FiPlus /> Tramo
                             </button>
@@ -570,7 +591,7 @@ const ProductForm = () => {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Precio x Unidad (USD)</label>
+                                    <label>Precio x Unidad ($)</label>
                                     <input
                                         type="number" value={bp.price}
                                         onChange={(e) => handleBulkPriceChange(index, 'price', e.target.value)}

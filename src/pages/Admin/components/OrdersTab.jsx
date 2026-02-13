@@ -72,13 +72,15 @@ const OrdersTab = () => {
                             </td>
                             <td>
                                 <div className={styles.tableActions} onClick={(e) => e.stopPropagation()}>
-                                    <a
-                                        href={`https://wa.me/${order.shippingData?.phone.replace(/\D/g, '')}`}
-                                        target="_blank"
-                                        className={styles.waLink}
-                                    >
-                                        Contactar
-                                    </a>
+                                    {order.shippingData?.phone && (
+                                        <a
+                                            href={`https://wa.me/${order.shippingData.phone.replace(/\D/g, '')}`}
+                                            target="_blank"
+                                            className={styles.waLink}
+                                        >
+                                            Contactar
+                                        </a>
+                                    )}
                                 </div>
                             </td>
                         </tr>

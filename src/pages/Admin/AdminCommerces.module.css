@@ -1,0 +1,222 @@
+.container {
+    padding: 2rem;
+    color: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffd700;
+    margin: 0;
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #ffd700;
+    color: #000;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.addBtn:hover {
+    background: #e6c200;
+    transform: translateY(-2px);
+}
+
+.controls {
+    margin-bottom: 2rem;
+}
+
+.searchBox {
+    position: relative;
+    max-width: 400px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.searchInput {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.searchInput:focus {
+    border-color: #ffd700;
+    outline: none;
+}
+
+.tableContainer {
+    background: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+.table th {
+    background: #252525;
+    color: #888;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.inactiveRow {
+    opacity: 0.5;
+}
+
+.commerceCell {
+    display: flex;
+    flex-direction: column;
+}
+
+.commerceName {
+    font-weight: 600;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.userEmail {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.contactInfo small {
+    color: #888;
+}
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #333;
+    color: #ccc;
+    text-transform: capitalize;
+}
+
+.badge.almacen {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+}
+
+.badge.kiosco {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.badge.supermercado {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+.badge.revendedor {
+    background: rgba(139, 92, 246, 0.2);
+    color: #a78bfa;
+}
+
+.badge.particular {
+    background: rgba(107, 114, 128, 0.2);
+    color: #d1d5db;
+}
+
+.statusBadge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.statusBadge.active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.statusBadge.inactive {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.actionsCell {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.actionBtn {
+    background: #333;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.actionBtn:hover {
+    background: #444;
+    color: #ffd700;
+}
+
+.deleteBtn:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+.activateBtn:hover {
+    background: #10b981;
+    color: #fff;
+}
+
+.deactivateBtn:hover {
+    background: #f59e0b;
+    color: #fff;
+}
