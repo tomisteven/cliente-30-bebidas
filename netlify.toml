@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/api/*"
-  to = "http://api.alvuelomayorista.com/api/:splat"
+  to = "https://servidor-30-bebidas-3om4.vercel.app/api/:splat"
   status = 200
   force = true
 
@@ -9,3 +9,4 @@
   to = "/index.html"
   status = 200
   force = false
+ Burbank
